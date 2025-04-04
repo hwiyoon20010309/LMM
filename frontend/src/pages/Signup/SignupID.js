@@ -99,27 +99,51 @@ const ModalBackdrop = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 999;
+   animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 `;
 
 const ModalBox = styled.div`
   background: #fff;
-  padding: 30px;
-  border-radius: 10px;
+  padding: 40px 30px;
+  border-radius: 20px;
+  width: 320px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: popIn 0.3s ease;
+
+  @keyframes popIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
 
   p {
     font-size: 18px;
-    margin-bottom: 20px;
+    color: #333;
+    margin-bottom: 25px;
+    font-weight: 500;
   }
 
   button {
-    padding: 10px 20px;
-    background-color: #68a0f4;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #68a0f4, #4a82d9);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: bold;
     cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #4a82d9, #346dc3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
   }
 `;
 
@@ -149,13 +173,13 @@ const SignupID = () => {
       const data = await response.json();
   
       if (response.ok) {
-        setModalMessage("회원가입 성공");
+        setModalMessage("🎉 회원가입 성공\n메인페이지로 돌아갑니다");
       } else {
-        setModalMessage(`회원가입 실패: ${data.message}`);
+        setModalMessage(`⚠️ 회원가입 실패\n ${data.message}`);
       }
     } catch (error) {
       console.error("❌ 회원가입 요청 오류:", error);
-      setModalMessage("회원가입 실패: 서버 오류");
+      setModalMessage("⚠️ 회원가입 실패\n서버 오류");
     }
   
     setIsModalOpen(true);
@@ -163,7 +187,7 @@ const SignupID = () => {
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    if (modalMessage === "회원가입 성공") {
+    if (modalMessage === "🎉 회원가입 성공\n메인페이지로 돌아갑니다") {
       navigate("/"); // 성공 시 이동
     }
   };
@@ -205,7 +229,9 @@ const SignupID = () => {
       {isModalOpen && (
         <ModalBackdrop>
           <ModalBox>
-            <p>{modalMessage}</p>
+            <p style={{ whiteSpace: "pre-line", fontSize: "18px" }}>
+            {modalMessage}
+            </p>
             <button onClick={handleModalClose}>확인</button>
           </ModalBox>
         </ModalBackdrop>
