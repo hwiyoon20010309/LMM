@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import LogoImage from "../../assets/img/logo.png";
+import { useNavigate } from "react-router-dom";
+
 
 const Container = styled.div`
   display: flex;
@@ -88,13 +90,82 @@ const LoginText = styled.p`
   }
 `;
 
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+`;
+
+const ModalBox = styled.div`
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+  p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #68a0f4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+`;
+
+
+/////////////////////////////
 const SignupID = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+
+  const [modalMessage, setModalMessage] = useState(""); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("회원가입 정보:", { id, password });
+  
+    try {
+      const response = await fetch("http://localhost:4000/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id, password })
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        setModalMessage("회원가입 성공");
+      } else {
+        setModalMessage(`회원가입 실패: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("❌ 회원가입 요청 오류:", error);
+      setModalMessage("회원가입 실패: 서버 오류");
+    }
+  
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    if (modalMessage === "회원가입 성공") {
+      navigate("/"); // 성공 시 이동
+    }
   };
 
   return (
@@ -130,6 +201,18 @@ const SignupID = () => {
       <LoginText>
         이미 계정이 있으신가요? <a href="/login">로그인하기</a>
       </LoginText>
+
+      {isModalOpen && (
+        <ModalBackdrop>
+          <ModalBox>
+            <p>{modalMessage}</p>
+            <button onClick={handleModalClose}>확인</button>
+          </ModalBox>
+        </ModalBackdrop>
+      )}
+
+
+
     </Container>
   );
 };
