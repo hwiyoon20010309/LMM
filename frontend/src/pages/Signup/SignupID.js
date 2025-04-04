@@ -158,9 +158,18 @@ const SignupID = () => {
   const [modalMessage, setModalMessage] = useState(""); 
   const [isModalOpen, setIsModalOpen] = useState(false); 
 
+  const [idError, setIdError] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    const isValidId = /^[a-zA-Z0-9]{1,8}$/.test(id);
+    if (!isValidId) {
+       setModalMessage("⚠️ 아이디는 영어와 숫자 조합만 가능하며,\n8자 이하로 입력해주세요.");
+        setIsModalOpen(true);
+    return;
+    }
+
     try {
       const response = await fetch("http://localhost:4000/api/signup", {
         method: "POST",
@@ -207,9 +216,27 @@ const SignupID = () => {
           type="text"
           placeholder="아이디를 입력해주세요."
           value={id}
-          onChange={(e) => setId(e.target.value)}
+          onChange={(e) => {
+            const inputId = e.target.value;
+            setId(inputId);
+        
+            // 아이디 유효성 검사: 영어+숫자, 8자 이하
+            const isValid = /^[a-zA-Z0-9]{1,8}$/.test(inputId);
+            if (!isValid && inputId !== "") {
+              setIdError("영어와 숫자만 입력 가능하며 8자 이하로 입력해주세요.");
+            } else {
+              setIdError(""); // 에러 없으면 초기화
+            }
+          }}
           autoComplete="off"
         />
+
+        { idError && (
+          <p style={{ color: "red", fontSize: "13px", marginBottom: "10px" }}>
+           {idError}
+          </p>
+        )}
+        
         <label>비밀번호</label>
         <Input
           type="password"
