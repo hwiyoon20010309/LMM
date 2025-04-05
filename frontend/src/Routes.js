@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import SignupID from "./pages/Signup/SignupID";
+import SignupID from "./pages/Signup/SignupID";  // 경로 수정
+
 import SignupSNS from "./pages/Signup/SignupSNS";
 import Main from "./pages/Main/Main";
 import MainPage from "./pages/Main/MainPage";
@@ -22,18 +23,17 @@ class AppRoutes extends React.Component {
     return (
       <Router>
         <Routes>
-
           <Route  path="/" element={<Main />} />
           <Route  path="/mainpage" element={<MainPage />} />
-          <Route  path="/signup" element={<Signup />} />
-          <Route  path="/signupid" element={<SignupID />} />
-          <Route  path="/signupsns" element={<SignupSNS />} />
+          
+         
+          
           <Route  path="/login" element={<Login />} />
           <Route  path="/mypage" element={<MyPage />} /> {/* ✅ MyPage 연결 */}
           <Route  path="/survey" element={<Survey />} />
           <Route path="/survey-participation" element={<SurveyParticipation />} />
           <Route exact path="/" element={<Main />} />
-          <Route exact path="/mainpage" element={<Main />} />
+          <Route exact path="/main" element={<Main />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/signupid" element={<SignupID />} />
           <Route exact path="/signupsns" element={<SignupSNS />} />
@@ -44,6 +44,8 @@ class AppRoutes extends React.Component {
           <Route path="/survey-create" element={<AdminPage/>} />
           <Route path="/survey-statistics" element={<AdminListPage />} />
           <Route path="/admin/:id" element={<AdminDetailPage />} />
+          <Route path="/signup" element={<SignupID />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     );

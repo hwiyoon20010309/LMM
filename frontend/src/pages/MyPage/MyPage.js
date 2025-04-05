@@ -4,7 +4,8 @@ import styled from "styled-components";
 import ProfilePic from "../../assets/img/profile.png";
 import LogoImg from "../../assets/img/logo.png";
 import { useNavigate } from "react-router-dom";
-import { Outlet } from "react-router-dom"; 
+import CommonHeader from "../../components/CommonHeader";
+
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,16 +28,6 @@ const FixedHeader = styled.div`
   z-index: 1000;
 `;
 
-const HeaderLogo = styled.h1`
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0;
-
-  img {
-    width: 150px;
-    cursor: pointer;
-  }
-`;
 
 const NavButtons = styled.div`
   display: flex;
@@ -77,7 +68,10 @@ const LeftSidebar = styled.div`
   flex-direction: column;
   gap: 10px;
   border-right: 1px solid #ddd;
-  margin-top: 20px;
+
+  a:first-child {
+    margin-top: 40px; // 여기서만 여백!
+  }
 `;
 
 const SidebarButton = styled(Link)`
@@ -343,11 +337,7 @@ const MyPage = () => {
   return (
     <Wrapper>
       <FixedHeader>
-        <HeaderLogo>
-          <Link to="/mainpage">
-            <img src={LogoImg} alt="로고" />
-          </Link>
-        </HeaderLogo>
+      <CommonHeader />
         <NavButtons>
           <NavButton to="/survey">🔍설문조사</NavButton>
           <NavButton to="/ranking">🏅랭킹조회</NavButton>

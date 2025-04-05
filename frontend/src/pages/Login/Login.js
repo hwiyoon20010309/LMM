@@ -98,33 +98,19 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { email, password } = this.state;
-  
-    try {
-      const response = await fetch("http://localhost:4000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: email, password }), // 백엔드에서 id 필드로 받으니까!
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        console.log("✅ 로그인 성공:", data);
-        this.props.navigate("/mainpage"); // 로그인 성공 시 이동
-      } else {
-        alert(`❌ 로그인 실패: ${data.message}`);
-      }
-    } catch (error) {
-      console.error("❌ 로그인 요청 오류:", error);
-      alert("서버 오류가 발생했습니다.");
+
+    // 임시 로그인 검증 (실제 API 요청으로 대체 가능)
+    if (email === "test@test.com" && password === "1234") {
+      console.log("로그인 성공!");
+      this.props.navigate("/mainpage"); // 로그인 성공 시 /Main/MainPage로 이동
+    } else {
+      alert("아이디 또는 비밀번호가 올바르지 않습니다.");
     }
   };
-  
+
   render() {
     return (
       <Container>
